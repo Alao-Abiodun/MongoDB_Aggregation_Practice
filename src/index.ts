@@ -1,11 +1,15 @@
 import express from 'express';
+import  connectDB from './connection';
 
 const app = express();
 
-const port = 5000
+const port = 3201
 
 app.get('/', (_, res) => {
   res.status(200).send()
 })
 
-app.listen(port, () => console.log(`Running on port ${port}`))
+app.listen(port, () => {
+    connectDB()
+    console.log(`Running on port ${port}`)
+})
