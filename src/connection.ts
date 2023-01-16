@@ -1,8 +1,12 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const { MONGODB_URI } = process.env;
 
 const connectDB = async () => {
     try {
-        await mongoose.connect('mongodb://127.0.0.1:27017/mongo_aggregation');
+        mongoose.connect(MONGODB_URI);
         console.log('Connected to the Database!');
     } catch (error) {
         console.log(error);

@@ -1,6 +1,7 @@
-import express from 'express';
+import express, { application } from 'express';
 import  connectDB from './connection';
 import { User } from './routes/user.route';
+import { Plan } from './routes/plan.route';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.get('/', (_, res) => {
 })
 
 app.use('/api/v1/users', User);
+app.use('/api/v1/plans', Plan);
 
 app.listen(port, () => {
     connectDB()

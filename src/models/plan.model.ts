@@ -1,6 +1,14 @@
 import { Schema, model } from 'mongoose';
 
-const planSchema = new Schema({
+export interface IPlan extends Document {
+    name: string;
+    price: string;
+    storage: number;
+    support: boolean;
+    upgrades: number;
+}
+
+const planSchema = new Schema<IPlan>({
     name: {
         type: String
     },
@@ -11,11 +19,11 @@ const planSchema = new Schema({
         type: Number,
     },
     support: {
-        type: Number
+        type: Boolean
     },
     upgrades: {
         type: Number,
     }
 });
 
-export const Plan = model('Plan', planSchema);
+export const Plan = model<IPlan>('Plan', planSchema);
