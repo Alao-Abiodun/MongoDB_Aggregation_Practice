@@ -2,7 +2,7 @@ import { User, IUser } from '../models/user.model';
 import { Request, Response, NextFunction } from 'express';
 
 
-exports.signUp = async (req: Request, res: Response) => {
+const signUp = async (req: Request, res: Response) => {
  try {
     const { name, email, age, state } = req.body;
     const user = new User();
@@ -18,6 +18,7 @@ exports.signUp = async (req: Request, res: Response) => {
         data: user
     })
  } catch (error) {
+    console.log(error);
     return res.status(500).json({
         message: 'Error saving user',
         error: error,
@@ -25,7 +26,7 @@ exports.signUp = async (req: Request, res: Response) => {
  }
 }
 
-exports.findUser = async (req: Request, res: Response) => {
+const fetchUsersByAge = async (req: Request, res: Response) => {
     try {
         const result = await User.aggregate([
             {
@@ -46,3 +47,49 @@ exports.findUser = async (req: Request, res: Response) => {
         });
     }
 }
+
+const fetchUsers = async (req: Request, res: Response) => {
+    try {
+        const result = await User.aggregate([
+            {
+                $group: {
+                    _id: {
+                        age: '$age',
+                    }
+                }
+            }
+        ])
+        return res.status(200).json({
+            message: 'Distinct value of user age',
+            data: result,
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Error saving user',
+            error: error,
+        });
+    }
+}
+
+const sortUserByAge = async (req: Request, res: Response) => {
+    try {
+        const result = await User.aggregate([
+            {
+                $sort: {
+                        age: 1
+                       }
+            }
+        ])
+        return res.status(200).json({
+            message: 'User sorted by age',
+            data: result,
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Error saving user',
+            error: error,
+        });
+    }
+}
+
+export { signUp, fetchUsersByAge, fetchUsers, sortUserByAge } 
